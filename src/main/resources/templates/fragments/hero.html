@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-  <section class="hero" th:fragment="hero(greeting)">
-    <!-- Seamless gradient overlay that integrates campus photo into page surface -->
+  <section class="hero" th:fragment="hero(greeting, subtitle)">
+    <!-- Seamless uniform teal overlay maintaining campus daylight and colors -->
     <div class="hero-overlay"></div>
 
-    <!-- Subtle geometric side accents -->
-    <div class="hero-facets-left"></div>
-    <div class="hero-facets-right"></div>
+    <!-- Left angled geometric facets framing the university entrance -->
+    <div class="hero-facet-left"></div>
+    <div class="hero-facet-left-sub"></div>
+
+    <!-- Right angled geometric facets -->
+    <div class="hero-facet-right"></div>
+    <div class="hero-facet-right-sub"></div>
 
     <!-- Center content -->
     <div class="hero-content">
-      <img th:src="@{/assets/brand/logo-white.png}" alt="MBU RouteX" class="hero-logo-img">
-      <h1 class="hero-title" th:utext="${greeting}">Hello <span class="hero-highlight">MBUIans !!!</span></h1>
-      <p class="hero-subtitle">SAFE RIDES &nbsp;·&nbsp; BRIGHTER DAYS</p>
+      <img th:src="@{/assets/brand/logo-white.png}" alt="MBU RouteX" class="hero-brand-symbol">
+      <h1 class="hero-title" th:utext="${greeting}">MBU RouteX</h1>
+      <p class="hero-subtitle" th:utext="${subtitle != null ? subtitle : 'SAFE RIDES &nbsp;·&nbsp; BRIGHTER DAYS'}">SAFE RIDES &nbsp;·&nbsp; BRIGHTER DAYS</p>
+      
       <div class="hero-scroll-indicator">
         <div class="hero-scroll-mouse">
           <div class="hero-scroll-dot"></div>
@@ -27,7 +32,7 @@
       </div>
     </div>
 
-    <!-- Right motto -->
+    <!-- Right motto: DREAM BELIEVE ACHIEVE -->
     <div class="hero-motto">
       <div class="hero-motto-bar"></div>
       <div class="hero-motto-lines">

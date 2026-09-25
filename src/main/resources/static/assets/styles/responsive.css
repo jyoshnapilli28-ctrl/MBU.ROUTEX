@@ -23,40 +23,26 @@
   .tablet-only  { display: block; }
 }
 
-/* ── Hamburger Menu (mobile taskbar) ── */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  padding: var(--space-2);
-  background: none;
-  border: none;
-}
-
-.hamburger span {
-  display: block;
-  width: 22px;
-  height: 2px;
-  background: var(--color-white);
-  border-radius: 2px;
-  transition: transform var(--transition-base), opacity var(--transition-base);
-}
-
+/* ── Mobile Navigation Treatment ── */
 @media (max-width: 767px) {
-  .hamburger { display: flex; }
-  .taskbar-nav { display: none; }
-  .taskbar-nav.is-open {
+  .taskbar {
+    height: 56px;
+    padding: 0 var(--space-3);
+  }
+  .taskbar-logo-img {
+    height: 32px;
+  }
+  .taskbar-nav {
     display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: var(--taskbar-height);
-    left: 0;
-    right: 0;
-    background: var(--color-primary);
-    padding: var(--space-3) var(--space-4);
-    box-shadow: var(--shadow-md);
-    z-index: var(--z-dropdown);
+    align-items: center;
+    gap: 4px;
+  }
+  .taskbar-nav-item {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+  }
+  .taskbar-nav-item span:not(.nav-icon-wrap):not(.nav-badge) {
+    display: none;
   }
 }
 
