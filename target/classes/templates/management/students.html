@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 1100px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/management/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Transit Student Registry</span>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4);">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Student Transit Allocations</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Roster of students authorized on university transit routes</p>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" th:text="${students.size() + ' registered students'}">2 registered students</span>
+      </div>
+
+      <!-- Empty State -->
+      <div th:if="${#lists.isEmpty(students)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-students.svg}" alt="No Students" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No students allocated</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">No active student bus passes registered.</p>
+      </div>
+
+      <!-- Students Table -->
+      <div th:if="${not #lists.isEmpty(students)}" class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Student Name</th>
+              <th>Department</th>
+              <th>Year</th>
+              <th>Contact Phone</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="s : ${students}">
+              <td style="font-weight: 700; color: var(--color-primary);" th:text="${s.studentId}">STU001</td>
+              <td style="font-weight: 600;" th:text="${s.fullName}">Ravi Kumar</td>
+              <td th:text="${s.department}">Computer Science</td>
+              <td th:text="'Year ' + ${s.year}">Year 3</td>
+              <td th:text="${s.phone}">0731-2550201</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

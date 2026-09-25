@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 1100px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/management/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Transit Dispatch Operations</span>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4);">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Fleet Trips & Runs</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Scheduled, active, and completed transport runs</p>
+        </div>
+
+        <!-- Filter Form -->
+        <form th:action="@{/management/trips}" method="GET" style="display: flex; align-items: center; gap: var(--space-2);">
+          <label for="status" style="font-size: 0.85rem; color: var(--text-muted);">Filter Status:</label>
+          <select id="status" name="status" onchange="this.form.submit()" class="form-control" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">
+            <option value="ALL" th:selected="${currentStatus == 'ALL'}">All Statuses</option>
+            <option value="SCHEDULED" th:selected="${currentStatus == 'SCHEDULED'}">SCHEDULED</option>
+            <option value="ACTIVE" th:selected="${currentStatus == 'ACTIVE'}">ACTIVE</option>
+            <option value="ON_ROUTE" th:selected="${currentStatus == 'ON_ROUTE'}">ON_ROUTE</option>
+            <option value="DELAYED" th:selected="${currentStatus == 'DELAYED'}">DELAYED</option>
+            <option value="COMPLETED" th:selected="${currentStatus == 'COMPLETED'}">COMPLETED</option>
+            <option value="CANCELLED" th:selected="${currentStatus == 'CANCELLED'}">CANCELLED</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- Empty State -->
+      <div th:if="${#lists.isEmpty(trips)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-tracking.svg}" alt="No Trips" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No trips found</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">No trips matching the selected status filter.</p>
+      </div>
+
+      <!-- Trips Table -->
+      <div th:if="${not #lists.isEmpty(trips)}" class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Bus Number</th>
+              <th>Route</th>
+              <th>Driver</th>
+              <th>Departure</th>
+              <th>Arrival</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="t : ${trips}">
+              <td style="font-weight: 700;" th:text="'#' + ${t.id}">#1</td>
+              <td style="font-weight: 600; color: var(--color-primary);" th:text="${t.busNumber}">MBU-001</td>
+              <td>
+                <span th:text="${t.routeName}">Indore City Route</span>
+                <span style="display: block; font-size: 0.75rem; color: var(--color-secondary);" th:text="${t.routeCode}">RTE-001</span>
+              </td>
+              <td th:text="${t.driverName}">Suresh Patil</td>
+              <td th:text="${t.scheduledDeparture}">24 Sep 2026, 07:30 AM</td>
+              <td th:text="${t.scheduledArrival}">08:45 AM</td>
+              <td>
+                <span class="status-badge"
+                      th:classappend="'status-' + ${#strings.toLowerCase(t.status)}"
+                      th:text="${t.status}">ACTIVE</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

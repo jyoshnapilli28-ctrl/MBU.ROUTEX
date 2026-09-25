@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('driver')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/driver/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Assigned Trip Roster</span>
+    </div>
+
+    <!-- Schedules Card -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-6); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4);">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Shift & Trip Schedules</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Daily roster, scheduled departure times, and destination routes</p>
+        </div>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" th:text="${trips.size() + ' scheduled runs'}">0 scheduled runs</span>
+      </div>
+
+      <!-- Empty State -->
+      <div th:if="${#lists.isEmpty(trips)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-schedule.svg}" alt="No Schedule" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No upcoming trips scheduled</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Check back later or contact transport dispatch for route assignments.</p>
+      </div>
+
+      <!-- Schedules Table -->
+      <div th:if="${not #lists.isEmpty(trips)}" class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Trip ID</th>
+              <th>Route</th>
+              <th>Departure Time</th>
+              <th>Estimated Arrival</th>
+              <th>Bus Number</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="t : ${trips}">
+              <td style="font-weight: 600;" th:text="'#' + ${t.id}">#1</td>
+              <td>
+                <strong th:text="${t.route != null ? t.route.routeName : 'Standard Route'}">Indore City Route</strong>
+                <span style="display: block; font-size: 0.75rem; color: var(--color-secondary);" th:text="${t.route != null ? t.route.routeCode : 'RTE-001'}">RTE-001</span>
+              </td>
+              <td th:text="${t.scheduledDeparture != null ? #temporals.format(t.scheduledDeparture, 'dd MMM, hh:mm a') : '-'}">24 Sep, 07:30 AM</td>
+              <td th:text="${t.scheduledArrival != null ? #temporals.format(t.scheduledArrival, 'hh:mm a') : '-'}">08:45 AM</td>
+              <td th:text="${t.bus != null ? t.bus.busNumber : '-'}">MBU-001</td>
+              <td>
+                <span class="status-badge"
+                      th:classappend="'status-' + ${#strings.toLowerCase(t.status)}"
+                      th:text="${t.status}">SCHEDULED</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

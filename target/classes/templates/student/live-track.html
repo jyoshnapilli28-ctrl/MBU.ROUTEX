@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('student')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/student/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge"
+            th:classappend="'status-' + ${#strings.toLowerCase(trackInfo.tripStatus)}"
+            th:text="${trackInfo.tripStatus}">ON_ROUTE</span>
+    </div>
+
+    <!-- Active Trip Header -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-4);">
+        <div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary); letter-spacing: 0.05em; text-transform: uppercase;">Live Fleet Status</span>
+          <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 4px 0;" th:text="${trackInfo.busNumber + ' — ' + trackInfo.routeName}">MBU-001 — Indore City Route</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Code: <strong th:text="${trackInfo.routeCode}">RTE-001</strong> | Driver: <span th:text="${trackInfo.driverName}">Suresh Patil</span></p>
+        </div>
+        <div style="text-align: right; background: rgba(87, 115, 118, 0.08); padding: var(--space-3) var(--space-5); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600;">Estimated Arrival</span>
+          <div style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); line-height: 1.2;" th:text="${trackInfo.etaMinutes + ' min'}">10 min</div>
+        </div>
+      </div>
+
+      <!-- Live Location Progress Card -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); margin-top: var(--space-4);">
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md); border-left: 4px solid var(--color-primary);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Current Stop</span>
+          <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 0 0;" th:text="${trackInfo.currentStop}">Main Gate Circle</h4>
+          <span style="font-size: 0.75rem; color: var(--color-success); font-weight: 500;">Vehicle Reported</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md); border-left: 4px solid var(--color-secondary);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Approaching Stop</span>
+          <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 0 0;" th:text="${trackInfo.nextStop}">Engineering Block</h4>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Next in sequence</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Departure Time</span>
+          <h4 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 0 0;" th:text="${trackInfo.departureTime}">07:30 AM</h4>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Last sync: <span th:text="${trackInfo.lastUpdated}">Just now</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Tracking Visualizer Graphic -->
+    <div class="card" style="text-align: center; padding: var(--space-8);">
+      <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-4);">Transit Waypoint Progression</h3>
+      <div style="display: flex; align-items: center; justify-content: center; max-width: 600px; margin: 0 auto; gap: var(--space-4);">
+        <div style="text-align: center;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-2) auto;">
+            <img th:src="@{/assets/icons/tracking/location-pin.svg}" width="22" height="22" alt="Pin" style="filter: brightness(0) invert(1);">
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);" th:text="${trackInfo.currentStop}">Current</span>
+        </div>
+        <div style="flex: 1; height: 4px; background: repeating-linear-gradient(to right, var(--color-primary) 0, var(--color-primary) 8px, transparent 8px, transparent 14px);"></div>
+        <div style="text-align: center;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-secondary); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-2) auto;">
+            <img th:src="@{/assets/icons/tracking/gps-active.svg}" width="22" height="22" alt="Next" style="filter: brightness(0) invert(1);">
+          </div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);" th:text="${trackInfo.nextStop}">Next</span>
+        </div>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: var(--space-6);">Transit updates refresh automatically with vehicle transponder signals.</p>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 800px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/management/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge status-active">Administrator Verified</span>
+    </div>
+
+    <!-- Success Flash Alert -->
+    <div th:if="${success}" class="alert alert-success" style="margin-bottom: var(--space-6);">
+      <span th:text="${success}">Profile updated successfully.</span>
+    </div>
+
+    <!-- Profile Details Card -->
+    <div class="card">
+      <div style="display: flex; align-items: center; gap: var(--space-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-6);">
+        <div style="width: 56px; height: 56px; border-radius: 50%; background: var(--color-primary); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 700;">
+          <span th:text="${mgmtUser != null ? #strings.substring(mgmtUser.fullName, 0, 1) : 'M'}">M</span>
+        </div>
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0;" th:text="${mgmtUser != null ? mgmtUser.fullName : user.username}">Dr. Anita Desai</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;" th:text="${mgmtUser != null ? mgmtUser.department : 'Transport Management'}">Transport Management</p>
+        </div>
+      </div>
+
+      <form th:action="@{/management/profile}" method="POST">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-4);">
+          <div class="form-group">
+            <label class="form-label">Username</label>
+            <input type="text" class="form-control" th:value="${user.username}" disabled style="background: var(--color-surface); cursor: not-allowed;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Role Privilege</label>
+            <input type="text" class="form-control" value="MANAGEMENT" disabled style="background: var(--color-surface); cursor: not-allowed;">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <input type="text" class="form-control" th:value="${mgmtUser != null ? mgmtUser.department : 'Transport Management'}" disabled style="background: var(--color-surface); cursor: not-allowed;">
+          </div>
+
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address <span style="color: var(--color-error);">*</span></label>
+            <input type="email" id="email" name="email" class="form-control" th:value="${user.email}" required>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding: var(--space-3) var(--space-6);">Update Profile</button>
+      </form>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-4);">
+
+  <div class="login-card">
+    <div class="login-header">
+      <a th:href="@{/}">
+        <img th:src="@{/assets/brand/logo-primary.png}" alt="MBU RouteX" style="height: 56px; width: auto;">
+      </a>
+      <div>
+        <span class="login-role-label">Management Portal</span>
+      </div>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: var(--space-2) 0 var(--space-1) 0;">Management Login</h2>
+      <p style="color: var(--text-muted); font-size: 0.875rem;">Enter your management credentials to continue</p>
+    </div>
+
+    <!-- Error Alert -->
+    <div th:if="${param.error != null or error != null}" class="alert alert-error" style="margin-bottom: var(--space-4);">
+      <span th:text="${error != null ? error : 'Invalid management username or password.'}">Invalid credentials</span>
+    </div>
+
+    <form th:action="@{/login/process}" method="POST">
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" id="username" name="username" class="form-control" placeholder="e.g. management1" required autofocus>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="••••••••" required>
+      </div>
+
+      <div style="background: var(--color-surface); padding: var(--space-3); border-radius: var(--radius-sm); margin-bottom: var(--space-4); font-size: 0.75rem; color: var(--text-muted);">
+        <strong>Demo account:</strong> <code>management1</code> / <code>password</code>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width: 100%; padding: var(--space-3);">Sign In as Management</button>
+    </form>
+
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: var(--space-6); font-size: 0.875rem;">
+      <a th:href="@{/login}" style="color: var(--color-primary); text-decoration: none;">Change Role</a>
+      <a th:href="@{/}" style="color: var(--text-muted); text-decoration: none;">Back to Home</a>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('student')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/student/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge status-active">Digital Pass Verified</span>
+    </div>
+
+    <!-- QR Pass Card -->
+    <div class="card" style="margin-bottom: var(--space-6); text-align: center; padding: var(--space-8) var(--space-6);">
+      <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); letter-spacing: 0.1em; text-transform: uppercase;">University Transit Pass</span>
+      <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 6px 0 2px 0;" th:text="${student.fullName}">Ravi Kumar</h1>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: var(--space-6);">
+        ID: <strong th:text="${student.studentId}">STU001</strong> | <span th:text="${student.department}">Computer Science</span> • Year <span th:text="${student.year}">3</span>
+      </p>
+
+      <!-- QR Code Image Stream -->
+      <div style="background: #ffffff; padding: var(--space-4); border: 2px dashed var(--color-tertiary, #698F92); border-radius: var(--radius-lg); display: inline-block; box-shadow: var(--shadow-sm); margin-bottom: var(--space-4);">
+        <img th:src="@{/student/attendance/qr-image}" alt="Student QR Code" width="220" height="220" style="display: block; border-radius: var(--radius-sm);">
+      </div>
+
+      <div>
+        <span class="status-badge" th:classappend="${qrCode.isActive ? 'status-active' : 'status-stopped'}" th:text="${qrCode.isActive ? 'ACTIVE BOARDING PASS' : 'INACTIVE'}">ACTIVE BOARDING PASS</span>
+      </div>
+      <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: var(--space-3);">Hold this QR code steady against the vehicle reader upon boarding the bus.</p>
+    </div>
+
+    <!-- Attendance Log Card -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;">Boarding History Log</h3>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" th:text="${history.size() + ' records'}">0 records</span>
+      </div>
+
+      <div th:if="${#lists.isEmpty(history)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-data.svg}" alt="No History" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No boarding records</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Scan records will appear automatically when you board.</p>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(history)}" class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Scan Time</th>
+              <th>Bus Number</th>
+              <th>Route</th>
+              <th>Trip ID</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="a : ${history}">
+              <td style="font-weight: 500;" th:text="${a.scannedAt != null ? #temporals.format(a.scannedAt, 'dd MMM yyyy, hh:mm a') : '-'}">24 Sep 2026, 07:45 AM</td>
+              <td th:text="${a.trip != null and a.trip.bus != null ? a.trip.bus.busNumber : 'MBU-001'}">MBU-001</td>
+              <td th:text="${a.trip != null and a.trip.route != null ? a.trip.route.routeName : 'Indore City Route'}">Indore City Route</td>
+              <td th:text="${a.trip != null ? '#' + a.trip.id : '#1'}">#1</td>
+              <td>
+                <span class="status-badge"
+                      th:classappend="'status-' + ${#strings.toLowerCase(a.status)}"
+                      th:text="${a.status}">PRESENT</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

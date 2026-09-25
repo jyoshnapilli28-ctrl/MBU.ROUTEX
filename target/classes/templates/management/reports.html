@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 1100px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/management/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Analytical Intelligence & Reports</span>
+    </div>
+
+    <!-- Filter & Configuration Card -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div style="border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-6);">
+        <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Generate Transit Operational Report</h2>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Compile route telemetry, passenger ridership, and vehicle maintenance audits</p>
+      </div>
+
+      <form th:action="@{/management/reports}" method="GET" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4); align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="reportType" class="form-label">Report Category</label>
+          <select id="reportType" name="reportType" class="form-control">
+            <option value="FLEET_UTILIZATION" th:selected="${selectedType == 'FLEET_UTILIZATION'}">Fleet Utilization & Routing</option>
+            <option value="ATTENDANCE_SUMMARY" th:selected="${selectedType == 'ATTENDANCE_SUMMARY'}">Student Boarding & Attendance</option>
+            <option value="COMPLAINTS_SUMMARY" th:selected="${selectedType == 'COMPLAINTS_SUMMARY'}">Grievance & Resolution Log</option>
+            <option value="MAINTENANCE_LOG" th:selected="${selectedType == 'MAINTENANCE_LOG'}">Workshop Maintenance Summary</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="startDate" class="form-label">Start Date</label>
+          <input type="date" id="startDate" name="startDate" class="form-control" th:value="${report.startDate}">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 0;">
+          <label for="endDate" class="form-label">End Date</label>
+          <input type="date" id="endDate" name="endDate" class="form-control" th:value="${report.endDate}">
+        </div>
+
+        <div>
+          <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px;">Generate Report</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Metrics Cards Summary -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--space-4); margin-bottom: var(--space-6);">
+      <div class="card" style="padding: var(--space-4); text-align: center;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Total Buses</span>
+        <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 4px 0 0 0;" th:text="${report.totalBuses}">5</h3>
+      </div>
+      <div class="card" style="padding: var(--space-4); text-align: center;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Assigned Students</span>
+        <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 4px 0 0 0;" th:text="${report.activeAssignments}">2</h3>
+      </div>
+      <div class="card" style="padding: var(--space-4); text-align: center;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Boarding Scans</span>
+        <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 4px 0 0 0;" th:text="${report.attendanceCount}">3</h3>
+      </div>
+      <div class="card" style="padding: var(--space-4); text-align: center;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Maintenance Records</span>
+        <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 4px 0 0 0;" th:text="${report.maintenanceCount}">3</h3>
+      </div>
+      <div class="card" style="padding: var(--space-4); text-align: center;">
+        <span style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Logged Complaints</span>
+        <h3 style="font-size: 1.75rem; font-weight: 700; color: var(--color-primary); margin: 4px 0 0 0;" th:text="${report.totalComplaints}">4</h3>
+      </div>
+    </div>
+
+    <!-- Report Table Output -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;">Executive Summary Roster</h3>
+        <button onclick="window.print()" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 4px;">
+          Print / Export PDF
+        </button>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Performance Metric</th>
+              <th>Current Metric Value</th>
+              <th>Assessment Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="r : ${report.rows}">
+              <td style="font-weight: 600; color: var(--text-primary);" th:text="${r.Metric}">Active Fleet Size</td>
+              <td th:text="${r.Value}">5</td>
+              <td>
+                <span class="status-badge status-active" th:text="${r.Status}">Optimal</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

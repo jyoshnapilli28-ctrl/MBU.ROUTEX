@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('driver')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/driver/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge status-delayed" style="background: rgba(181, 134, 13, 0.15); color: #B5860D; border: 1px solid rgba(181, 134, 13, 0.3);">Driver Hotline 24/7</span>
+    </div>
+
+    <!-- Emergency Intro Card -->
+    <div class="card" style="margin-bottom: var(--space-6); border-left: 4px solid var(--color-error);">
+      <div style="display: flex; align-items: center; gap: var(--space-4);">
+        <div style="width: 48px; height: 48px; border-radius: var(--radius-md); background: rgba(176, 48, 48, 0.1); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+          <img th:src="@{/assets/icons/driver/driver-emergency.svg}" width="28" height="28" alt="Driver Emergency">
+        </div>
+        <div>
+          <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Fleet Dispatch & Breakdown Desk</h1>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Direct lines for mechanical breakdown, accident response, and route diversion support</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emergency Contacts Grid -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--space-4);">
+      <div th:each="c : ${contacts}" class="card" style="display: flex; flex-direction: column; justify-content: space-between;">
+        <div>
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-2);">
+            <span style="font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; color: var(--color-primary); text-transform: uppercase;" th:text="${c.category}">TRANSPORT</span>
+            <span style="width: 8px; height: 8px; border-radius: 50%; background: var(--color-success); display: inline-block;"></span>
+          </div>
+          <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 0 0 4px 0;" th:text="${c.name}">Transport Control Desk</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0 0 var(--space-4) 0;" th:text="${c.role}">24/7 Fleet operations and assistance</p>
+        </div>
+
+        <div style="padding-top: var(--space-3); border-top: 1px solid var(--border-color);">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+              <span style="font-size: 0.75rem; color: var(--text-muted); display: block;">Telephone</span>
+              <strong style="font-size: 1rem; color: var(--text-primary);" th:text="${c.phone}">0731-2550199</strong>
+            </div>
+            <a th:href="'tel:' + ${c.phone}" class="btn btn-sm btn-primary" style="display: inline-flex; align-items: center; gap: 4px;">
+              Call Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+/* ============================================================
+   MBU RouteX — Borders
+   ============================================================ */
+
+/* ── Border Utilities ── */
+.border         { border: var(--border-width) solid var(--border-color); }
+.border-top     { border-top: var(--border-width) solid var(--border-color); }
+.border-bottom  { border-bottom: var(--border-width) solid var(--border-color); }
+.border-none    { border: none; }
+
+/* ── Divider ── */
+hr, .divider {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: var(--space-6) 0;
+}
+
+/* ── Input borders ── */
+.border-input   { border: 1px solid var(--border-color-input); }
+.border-focus   { border: 2px solid var(--border-color-focus); }
+.border-error   { border: 1px solid var(--color-error); }
+.border-success { border: 1px solid var(--color-success); }

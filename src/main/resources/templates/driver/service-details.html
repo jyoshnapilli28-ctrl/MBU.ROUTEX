@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('driver')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/driver/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge status-active">Duty Assignment Active</span>
+    </div>
+
+    <!-- Overview Card -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-4);">
+        <div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary); letter-spacing: 0.05em; text-transform: uppercase;">Service Manifest</span>
+          <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 4px 0;" th:text="${serviceDetails.routeName}">Indore City Route</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Code: <strong th:text="${serviceDetails.routeCode}">RTE-001</strong> | Bus: <strong th:text="${serviceDetails.busNumber}">MBU-001</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Assigned Students</span>
+          <p style="font-size: 1.5rem; font-weight: 700; color: var(--color-primary); margin: 0;" th:text="${serviceDetails.studentCount}">2</p>
+        </div>
+      </div>
+
+      <!-- Metadata Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: var(--space-4);">
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Vehicle Registration</span>
+          <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${serviceDetails.registration}">MP-09-FA-1234</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);" th:text="${serviceDetails.busCapacity + ' Passenger Capacity'}">50 Passenger Capacity</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Driver Profile</span>
+          <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${serviceDetails.driverName}">Suresh Patil</h4>
+          <span style="font-size: 0.8rem; color: var(--text-muted);" th:text="'License: ' + ${serviceDetails.licenseNumber}">License: MH12-DL-2020-1234</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Scheduled Departure</span>
+          <h4 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${serviceDetails.departureTime}">07:30 AM</h4>
+          <span style="font-size: 0.8rem; color: var(--color-secondary);" th:text="'Status: ' + ${serviceDetails.tripStatus}">Status: ACTIVE</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route Stops Sequence -->
+    <div class="card">
+      <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-4);">Assigned Route Stops</h3>
+      
+      <div th:if="${#lists.isEmpty(serviceDetails.stops)}" class="empty-state" style="padding: var(--space-6); text-align: center;">
+        <img th:src="@{/assets/illustrations/empty/no-route.svg}" alt="No Stops" width="80" style="margin-bottom: var(--space-3);">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">No stops assigned for this route yet.</p>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(serviceDetails.stops)}" style="display: flex; flex-direction: column; gap: var(--space-3);">
+        <div th:each="stop, iterStat : ${serviceDetails.stops}" style="display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--color-surface);">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-primary); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;" th:text="${iterStat.count}">1</div>
+          <div style="flex: 1;">
+            <strong style="color: var(--text-primary); font-size: 0.95rem;" th:text="${stop}">Stop Name</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

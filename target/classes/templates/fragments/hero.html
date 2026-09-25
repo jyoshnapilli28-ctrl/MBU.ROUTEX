@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+  <section class="hero" th:fragment="hero(greeting)">
+    <!-- Seamless gradient overlay that integrates campus photo into page surface -->
+    <div class="hero-overlay"></div>
+
+    <!-- Subtle geometric side accents -->
+    <div class="hero-facets-left"></div>
+    <div class="hero-facets-right"></div>
+
+    <!-- Center content -->
+    <div class="hero-content">
+      <img th:src="@{/assets/brand/logo-white.png}" alt="MBU RouteX" class="hero-logo-img">
+      <h1 class="hero-title" th:utext="${greeting}">Hello <span class="hero-highlight">MBUIans !!!</span></h1>
+      <p class="hero-subtitle">SAFE RIDES &nbsp;·&nbsp; BRIGHTER DAYS</p>
+      <div class="hero-scroll-indicator">
+        <div class="hero-scroll-mouse">
+          <div class="hero-scroll-dot"></div>
+        </div>
+        <div class="hero-scroll-label">SCROLL DOWN<br>TO EXPLORE</div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+             style="margin-top: 1px; color: rgba(255,255,255,0.85);">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Right motto -->
+    <div class="hero-motto">
+      <div class="hero-motto-bar"></div>
+      <div class="hero-motto-lines">
+        <span>DREAM</span>
+        <span>BELIEVE</span>
+        <span>ACHIEVE</span>
+      </div>
+    </div>
+
+  </section>
+</body>
+</html>

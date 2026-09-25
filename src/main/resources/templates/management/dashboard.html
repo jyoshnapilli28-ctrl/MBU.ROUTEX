@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #E5EBEB); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <!-- Hero -->
+  <div th:replace="~{fragments/hero :: hero('Welcome <span class=&quot;hero-highlight&quot;>Management !!!</span>')}"></div>
+
+  <!-- Dashboard Cards Grid -->
+  <main style="flex: 1; padding: var(--space-6) 0 var(--space-8);">
+
+    <!-- Row 1: 3 cards -->
+    <div class="dash-grid">
+
+      <!-- Bus Details -->
+      <a th:href="@{/management/bus-details}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-teal">
+              <img th:src="@{/assets/icons/management/bus-details.svg}" alt="Bus Details">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Bus Details</h3>
+              <p>All vehicles, capacity, active assignments, route &amp; driver links.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-bus.png}" alt="Bus" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Trip Management -->
+      <a th:href="@{/management/trips}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-blue">
+              <img th:src="@{/assets/icons/management/trip-management.svg}" alt="Trip Management">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Trip Management</h3>
+              <p>Daily trips, schedules, ongoing runs and completion tracking.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-schedule.png}" alt="Trips" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Complaints -->
+      <a th:href="@{/management/complaints}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-amber">
+              <img th:src="@{/assets/icons/management/management-complaints.svg}" alt="Complaints">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Complaints</h3>
+              <p>Review, investigate and resolve student and driver complaints.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-complaint.png}" alt="Complaints" class="mcard-visual-img">
+        </div>
+      </a>
+    </div>
+
+    <!-- Row 2: 3 cards -->
+    <div class="dash-grid" style="margin-top: 16px;">
+
+      <!-- Maintenance -->
+      <a th:href="@{/management/maintenance}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-slate">
+              <img th:src="@{/assets/icons/management/maintenance.svg}" alt="Maintenance">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Maintenance</h3>
+              <p>Log servicing records, repairs and scheduled inspections.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-mechanic.png}" alt="Maintenance" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Reports -->
+      <a th:href="@{/management/reports}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-green">
+              <img th:src="@{/assets/icons/management/reports.svg}" alt="Reports">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Reports</h3>
+              <p>Generate operational, attendance, route utility &amp; status reports.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-service.png}" alt="Reports" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Student Overview -->
+      <a th:href="@{/management/students}" class="mcard">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-blue">
+              <img th:src="@{/assets/icons/management/student-overview.svg}" alt="Student Overview">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3>Student Overview</h3>
+              <p>Student allocations by bus, route breakdowns &amp; attendance info.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5"
+                 stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-qr.png}" alt="Students" class="mcard-visual-img">
+        </div>
+      </a>
+    </div>
+
+  </main>
+
+  <footer style="background:#fff; border-top:1px solid var(--color-pale); padding: var(--space-4); text-align:center; margin-top:auto;">
+    <p style="color:var(--text-muted); font-size:0.82rem; margin:0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-4);">
+
+  <div class="card" style="max-width: 520px; width: 100%; text-align: center; padding: var(--space-8) var(--space-6);">
+    <img th:src="@{/assets/illustrations/error/500.svg}" alt="Server Error" width="160" height="160" style="margin: 0 auto var(--space-6) auto; display: block;">
+    
+    <h1 style="font-size: 2rem; font-weight: 700; color: var(--text-primary); margin: 0 0 var(--space-2) 0;">Server Error</h1>
+    <p style="color: var(--text-muted); font-size: 0.95rem; margin: 0 0 var(--space-6) 0;" th:text="${message != null ? message : 'An unexpected server error occurred while processing your transit request.'}">An unexpected server error occurred while processing your transit request.</p>
+
+    <div style="display: flex; justify-content: center; gap: var(--space-3);">
+      <a th:href="@{/}" class="btn btn-primary">Return Home</a>
+      <a href="javascript:location.reload()" class="btn btn-secondary">Retry</a>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+/* ============================================================
+   MBU RouteX — Responsive Design
+   ============================================================ */
+
+/* ── Breakpoints
+   Mobile:  < 768px
+   Tablet:  768px – 1023px
+   Laptop:  1024px – 1279px
+   Desktop: 1280px+
+   ── */
+
+/* ── Show/Hide Utilities ── */
+.mobile-only   { display: none; }
+.tablet-only   { display: none; }
+.desktop-only  { display: block; }
+
+@media (max-width: 767px) {
+  .mobile-only  { display: block; }
+  .desktop-only { display: none; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .tablet-only  { display: block; }
+}
+
+/* ── Hamburger Menu (mobile taskbar) ── */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: var(--space-2);
+  background: none;
+  border: none;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 2px;
+  transition: transform var(--transition-base), opacity var(--transition-base);
+}
+
+@media (max-width: 767px) {
+  .hamburger { display: flex; }
+  .taskbar-nav { display: none; }
+  .taskbar-nav.is-open {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: var(--taskbar-height);
+    left: 0;
+    right: 0;
+    background: var(--color-primary);
+    padding: var(--space-3) var(--space-4);
+    box-shadow: var(--shadow-md);
+    z-index: var(--z-dropdown);
+  }
+}
+
+/* ── Images Responsive ── */
+img { max-width: 100%; height: auto; display: block; }
+
+.hero-image { width: 100%; height: 100%; object-fit: cover; object-position: center; }
+
+/* ── Scroll Reveal (subtle) ── */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Print ── */
+@media print {
+  .taskbar, .hamburger, .btn, .toast { display: none; }
+  body { background: white; }
+  .card { box-shadow: none; border: 1px solid var(--border-color); }
+}

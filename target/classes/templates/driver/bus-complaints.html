@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('driver')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/driver/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Vehicle Maintenance & Defect Log</span>
+    </div>
+
+    <!-- Success Alert -->
+    <div th:if="${success}" class="alert alert-success" style="margin-bottom: var(--space-6);">
+      <span th:text="${success}">Complaint submitted successfully.</span>
+    </div>
+
+    <!-- Form Card -->
+    <div class="card" style="margin-bottom: var(--space-8);">
+      <div style="border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-6);">
+        <h2 style="font-size: 1.35rem; font-weight: 700; color: var(--text-primary); margin: 0 0 4px 0;">Report Vehicle Defect or Issue</h2>
+        <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Notify workshop mechanics and transport management of vehicle problems</p>
+      </div>
+
+      <form th:action="@{/driver/bus-complaints}" method="POST" th:object="${complaintRequest}">
+        <div class="form-group">
+          <label for="category" class="form-label">Issue Category <span style="color: var(--color-error);">*</span></label>
+          <select id="category" name="category" class="form-control" required>
+            <option value="">Select issue category</option>
+            <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}">Tyre problem</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="description" class="form-label">Defect Details & Observations <span style="color: var(--color-error);">*</span></label>
+          <textarea id="description" name="description" class="form-control" rows="4" placeholder="Describe symptoms, noise, warning lights, or parts affected..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding: var(--space-3) var(--space-6);">Submit Maintenance Ticket</button>
+      </form>
+    </div>
+
+    <!-- History Card -->
+    <div class="card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;">Logged Vehicle Defects</h3>
+        <span style="font-size: 0.85rem; color: var(--text-muted);" th:text="${complaints.size() + ' reported'}">0 reported</span>
+      </div>
+
+      <div th:if="${#lists.isEmpty(complaints)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-complaints.svg}" alt="No Complaints" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No defects reported</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Vehicle is operational with zero open tickets.</p>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(complaints)}" class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Ticket #</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th>Workshop Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="c : ${complaints}">
+              <td style="font-weight: 600;" th:text="'#' + ${c.id}">#1</td>
+              <td th:text="${c.category}">Tyre problem</td>
+              <td th:text="${c.description}" style="max-width: 250px; word-break: break-word;">Issue description</td>
+              <td th:text="${c.createdAt != null ? #temporals.format(c.createdAt, 'dd MMM yyyy') : '-'}">24 Sep 2026</td>
+              <td>
+                <span class="status-badge"
+                      th:classappend="'status-' + ${#strings.toLowerCase(c.currentStatus)}"
+                      th:text="${c.currentStatus}">OPEN</span>
+              </td>
+              <td>
+                <span th:if="${c.managementResponse != null}" th:text="${c.managementResponse}" style="color: var(--text-primary); font-size: 0.85rem;">Response</span>
+                <span th:if="${c.managementResponse == null}" class="text-muted" style="font-style: italic; font-size: 0.8rem;">Awaiting inspection</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

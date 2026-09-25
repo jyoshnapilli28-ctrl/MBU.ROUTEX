@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: var(--space-4);">
+
+  <div class="login-card" style="max-width: 480px; width: 100%;">
+    <div class="login-header">
+      <a th:href="@{/}">
+        <img th:src="@{/assets/brand/logo-primary.png}" alt="MBU RouteX" style="height: 56px; width: auto;">
+      </a>
+      <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: var(--space-2) 0 var(--space-1) 0;">Select Sign In Portal</h2>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Choose your account type to proceed</p>
+    </div>
+
+    <!-- Error Alert if redirected here with error -->
+    <div th:if="${param.error != null or error != null}" class="alert alert-error" style="margin-bottom: var(--space-4);">
+      <span th:text="${error != null ? error : 'Invalid username or password. Please try again.'}">Invalid credentials</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4);">
+      <a th:href="@{/login/student}" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <img th:src="@{/assets/icons/student/student-role.svg}" width="20" height="20" alt="Student" style="filter: brightness(0) invert(1);">
+        Sign In as Student
+      </a>
+      <a th:href="@{/login/driver}" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <img th:src="@{/assets/icons/driver/driver-role.svg}" width="20" height="20" alt="Driver" style="filter: brightness(0) invert(1);">
+        Sign In as Driver
+      </a>
+      <a th:href="@{/login/management}" class="btn btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <img th:src="@{/assets/icons/management/management-role.svg}" width="20" height="20" alt="Management" style="filter: brightness(0) invert(1);">
+        Sign In as Management
+      </a>
+    </div>
+
+    <div style="text-align: center; margin-top: var(--space-6);">
+      <a th:href="@{/}" style="color: var(--color-primary); font-size: 0.875rem; text-decoration: none; font-weight: 500;">← Back to Home</a>
+    </div>
+  </div>
+
+</body>
+</html>

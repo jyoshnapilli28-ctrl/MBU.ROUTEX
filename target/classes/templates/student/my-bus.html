@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('student')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Breadcrumb & Back -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/student/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge"
+            th:classappend="'status-' + ${#strings.toLowerCase(busInfo.busStatus)}"
+            th:text="${busInfo.busStatus}">ACTIVE</span>
+    </div>
+
+    <!-- Bus Header Card -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); border-bottom: 1px solid var(--border-color, #E2E8F0); padding-bottom: var(--space-4); margin-bottom: var(--space-4);">
+        <div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary); letter-spacing: 0.05em; text-transform: uppercase;">Assigned Vehicle</span>
+          <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 4px 0;" th:text="${busInfo.busNumber}">MBU-001</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Registration: <strong th:text="${busInfo.registration}">MP-09-FA-1234</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.85rem; color: var(--text-muted);">Seating Capacity</span>
+          <p style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin: 0;" th:text="${busInfo.capacity + ' Seats'}">50 Seats</p>
+        </div>
+      </div>
+
+      <!-- Route & Driver Information Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4);">
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Route Name</span>
+          <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${busInfo.routeName}">Indore City Route</h3>
+          <span style="font-size: 0.8rem; color: var(--color-secondary); font-weight: 500;" th:text="${busInfo.routeCode}">RTE-001</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Your Boarding Stop</span>
+          <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${busInfo.pickupStop}">Library Circle</h3>
+          <span style="font-size: 0.8rem; color: var(--text-muted);">Assigned Pickup Location</span>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-4); border-radius: var(--radius-md);">
+          <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase;">Assigned Driver</span>
+          <h3 style="font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin: 4px 0 2px 0;" th:text="${busInfo.driverName}">Suresh Patil</h3>
+          <a th:href="'tel:' + ${busInfo.driverPhone}" style="font-size: 0.85rem; color: var(--color-primary); text-decoration: none; font-weight: 500;" th:text="${busInfo.driverPhone}">0731-2550101</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Route Stops Timeline -->
+    <div class="card">
+      <h3 style="font-size: 1.25rem; font-weight: 600; color: var(--text-primary); margin-bottom: var(--space-4);">Route Stops & Sequence</h3>
+      
+      <div th:if="${#lists.isEmpty(busInfo.stops)}" class="empty-state" style="padding: var(--space-6); text-align: center;">
+        <img th:src="@{/assets/illustrations/empty/no-route.svg}" alt="No Stops" width="80" style="margin-bottom: var(--space-3);">
+        <p style="color: var(--text-muted); font-size: 0.9rem;">No stops mapped for this route yet.</p>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(busInfo.stops)}" style="display: flex; flex-direction: column; gap: var(--space-3);">
+        <div th:each="stop, iterStat : ${busInfo.stops}" style="display: flex; align-items: center; gap: var(--space-4); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); background: var(--color-surface);">
+          <div style="width: 28px; height: 28px; border-radius: 50%; background: var(--color-primary); color: #ffffff; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700;" th:text="${iterStat.count}">1</div>
+          <div style="flex: 1;">
+            <strong style="color: var(--text-primary); font-size: 0.95rem;" th:text="${stop}">Stop Name</strong>
+            <span th:if="${stop == busInfo.pickupStop}" style="margin-left: 8px; font-size: 0.75rem; background: var(--color-primary); color: #ffffff; padding: 2px 8px; border-radius: 9999px;">Your Stop</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

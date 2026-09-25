@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('driver')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 900px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/driver/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span class="status-badge"
+            th:classappend="'status-' + ${#strings.toLowerCase(busStatus.currentStatus)}"
+            th:text="${busStatus.currentStatus}">ACTIVE</span>
+    </div>
+
+    <!-- Success Message -->
+    <div th:if="${success}" class="alert alert-success" style="margin-bottom: var(--space-6);">
+      <span th:text="${success}">Status updated successfully.</span>
+    </div>
+
+    <!-- Current Vehicle Status Card -->
+    <div class="card" style="margin-bottom: var(--space-6);">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4); margin-bottom: var(--space-4);">
+        <div>
+          <span style="font-size: 0.85rem; font-weight: 600; color: var(--color-primary); letter-spacing: 0.05em; text-transform: uppercase;">Vehicle Operations</span>
+          <h1 style="font-size: 1.75rem; font-weight: 700; color: var(--text-primary); margin: 4px 0;" th:text="${busStatus.busNumber}">MBU-001</h1>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin: 0;">Registration: <strong th:text="${busStatus.registration}">MP-09-FA-1234</strong></p>
+        </div>
+        <div style="text-align: right;">
+          <span style="font-size: 0.8rem; color: var(--text-muted); display: block;">Assigned Route</span>
+          <strong style="font-size: 1.1rem; color: var(--text-primary);" th:text="${busStatus.routeName}">Indore City Route</strong>
+          <span style="display: block; font-size: 0.8rem; color: var(--color-secondary);" th:text="${busStatus.routeCode}">RTE-001</span>
+        </div>
+      </div>
+
+      <!-- Status Update Form -->
+      <div style="background: var(--color-surface); padding: var(--space-6); border-radius: var(--radius-md); margin-top: var(--space-4);">
+        <h3 style="font-size: 1.15rem; font-weight: 600; color: var(--text-primary); margin: 0 0 var(--space-4) 0;">Update Running Status</h3>
+        
+        <form th:action="@{/driver/bus-status/update}" method="POST" style="display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: flex-end;">
+          <div class="form-group" style="flex: 1; min-width: 200px; margin-bottom: 0;">
+            <label for="status" class="form-label">Operating Status</label>
+            <select id="status" name="status" class="form-control" required>
+              <option th:each="st : ${statuses}"
+                      th:value="${st}"
+                      th:text="${st}"
+                      th:selected="${st == busStatus.currentStatus}">ACTIVE</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="padding: 10px 24px;">Confirm Status Change</button>
+        </form>
+
+        <p style="color: var(--text-muted); font-size: 0.8rem; margin: var(--space-3) 0 0 0;">
+          Status updates immediately broadcast to student tracking passes and dispatch headquarters.
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

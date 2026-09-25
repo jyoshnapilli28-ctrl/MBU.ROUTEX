@@ -1,0 +1,161 @@
+/* ============================================================
+   MBU RouteX — CSS Variables (Design Tokens)
+   TRACK · TRAVEL · CONNECT
+   Status: LOCKED v1.0
+   ============================================================ */
+
+:root {
+
+  /* ──────────────────────────────────────────
+     PRIMARY PALETTE (LOCKED)
+     ────────────────────────────────────────── */
+  --color-primary:    #577376;
+  --color-secondary:  #698F92;
+  --color-tertiary:   #8BA7A8;
+  --color-muted:      #AAB9BA;
+  --color-pale:       #C5D3D4;
+  --color-surface:    #E5EBEB;
+  --color-white:      #FFFFFF;
+
+  /* ──────────────────────────────────────────
+     SEMANTIC COLORS (restrained)
+     ────────────────────────────────────────── */
+  --color-success:    #4a7c59;
+  --color-success-bg: #edf4f0;
+  --color-warning:    #b5860d;
+  --color-warning-bg: #fdf6e3;
+  --color-error:      #b03030;
+  --color-error-bg:   #fceaea;
+  --color-emergency:  #b03030;
+  --color-inactive:   #9ca3af;
+
+  /* ──────────────────────────────────────────
+     TEXT COLORS
+     ────────────────────────────────────────── */
+  --text-primary:     #2d3748;
+  --text-secondary:   #577376;
+  --text-muted:       #718096;
+  --text-on-dark:     #FFFFFF;
+  --text-link:        #698F92;
+  --text-error:       #b03030;
+
+  /* ──────────────────────────────────────────
+     HERO OVERLAY
+     ────────────────────────────────────────── */
+  --hero-overlay:     rgba(87, 115, 118, 0.55);
+
+  /* ──────────────────────────────────────────
+     FONT FAMILY
+     ────────────────────────────────────────── */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont,
+                 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  /* ──────────────────────────────────────────
+     FONT SIZES
+     ────────────────────────────────────────── */
+  --text-display: 2.5rem;
+  --text-h1:      2rem;
+  --text-h2:      1.5rem;
+  --text-h3:      1.125rem;
+  --text-body:    1rem;
+  --text-sm:      0.875rem;
+  --text-xs:      0.75rem;
+  --text-button:  0.9375rem;
+
+  /* ──────────────────────────────────────────
+     FONT WEIGHTS
+     ────────────────────────────────────────── */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* ──────────────────────────────────────────
+     LINE HEIGHTS
+     ────────────────────────────────────────── */
+  --leading-tight:  1.25;
+  --leading-snug:   1.375;
+  --leading-normal: 1.5;
+  --leading-loose:  1.6;
+
+  /* ──────────────────────────────────────────
+     LETTER SPACING
+     ────────────────────────────────────────── */
+  --tracking-tight:  -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide:   0.05em;
+  --tracking-wider:  0.1em;
+  --tracking-widest: 0.15em;
+
+  /* ──────────────────────────────────────────
+     SPACING (base-8 scale)
+     ────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ──────────────────────────────────────────
+     BORDER RADIUS
+     ────────────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   20px;
+  --radius-full: 9999px;
+
+  /* ──────────────────────────────────────────
+     SHADOWS
+     ────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(87, 115, 118, 0.05);
+  --shadow-sm: 0 1px 3px rgba(87, 115, 118, 0.08);
+  --shadow-md: 0 2px 8px rgba(87, 115, 118, 0.10);
+  --shadow-lg: 0 4px 16px rgba(87, 115, 118, 0.14);
+  --shadow-xl: 0 8px 30px rgba(87, 115, 118, 0.16);
+
+  /* ──────────────────────────────────────────
+     BORDERS
+     ────────────────────────────────────────── */
+  --border-color:        #C5D3D4;
+  --border-color-focus:  #698F92;
+  --border-color-input:  #AAB9BA;
+  --border-width:        1px;
+  --border-width-focus:  2px;
+
+  /* ──────────────────────────────────────────
+     TRANSITIONS
+     ────────────────────────────────────────── */
+  --transition-fast:   0.1s ease;
+  --transition-base:   0.2s ease;
+  --transition-slow:   0.3s ease;
+
+  /* ──────────────────────────────────────────
+     Z-INDEX LAYERS
+     ────────────────────────────────────────── */
+  --z-below:    -1;
+  --z-base:     0;
+  --z-raised:   10;
+  --z-dropdown: 100;
+  --z-overlay:  200;
+  --z-modal:    300;
+  --z-toast:    400;
+  --z-top:      500;
+
+  /* ──────────────────────────────────────────
+     LAYOUT
+     ────────────────────────────────────────── */
+  --max-width:        1200px;
+  --taskbar-height:   60px;
+  --hero-height:      420px;
+  --hero-height-sm:   280px;
+  --card-min-width:   240px;
+  --sidebar-width:    260px;
+}

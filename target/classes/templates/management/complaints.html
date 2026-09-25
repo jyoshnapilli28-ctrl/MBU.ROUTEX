@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background: var(--color-surface, #F5F7F7); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- Taskbar -->
+  <div th:replace="~{fragments/taskbar :: taskbar('management')}"></div>
+
+  <main class="container" style="flex: 1; padding: var(--space-8) var(--space-4); max-width: 1100px; margin: 0 auto; width: 100%;">
+    <!-- Top Bar -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-6);">
+      <a th:href="@{/management/dashboard}" class="btn btn-sm btn-secondary" style="display: inline-flex; align-items: center; gap: 6px;">
+        <img th:src="@{/assets/icons/navigation/back.svg}" width="16" height="16" alt="Back"> Back to Dashboard
+      </a>
+      <span style="font-size: 0.875rem; color: var(--text-muted);">Grievance Resolution Desk</span>
+    </div>
+
+    <!-- Success Alert -->
+    <div th:if="${success}" class="alert alert-success" style="margin-bottom: var(--space-6);">
+      <span th:text="${success}">Complaint status updated.</span>
+    </div>
+
+    <!-- Main Card -->
+    <div class="card">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-4); margin-bottom: var(--space-6); border-bottom: 1px solid var(--border-color); padding-bottom: var(--space-4);">
+        <div>
+          <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin: 0 0 2px 0;">Transport Complaints & Tickets</h2>
+          <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0;">Review student grievances, vehicle defect tickets, and manage responses</p>
+        </div>
+
+        <!-- Filter Form -->
+        <form th:action="@{/management/complaints}" method="GET" style="display: flex; align-items: center; gap: var(--space-2);">
+          <label for="status" style="font-size: 0.85rem; color: var(--text-muted);">Filter Status:</label>
+          <select id="status" name="status" onchange="this.form.submit()" class="form-control" style="width: auto; padding: 6px 12px; font-size: 0.85rem;">
+            <option value="ALL" th:selected="${currentStatus == 'ALL'}">All Statuses</option>
+            <option th:each="st : ${statuses}"
+                    th:value="${st}"
+                    th:text="${st}"
+                    th:selected="${st == currentStatus}">OPEN</option>
+          </select>
+        </form>
+      </div>
+
+      <!-- Empty State -->
+      <div th:if="${#lists.isEmpty(complaints)}" class="empty-state" style="text-align: center; padding: var(--space-8);">
+        <img th:src="@{/assets/illustrations/empty/no-complaints.svg}" alt="No Complaints" width="90" style="margin-bottom: var(--space-3); opacity: 0.85;">
+        <h4 style="font-size: 1rem; color: var(--text-primary); margin-bottom: 4px;">No complaints found</h4>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">No records matching this status criteria.</p>
+      </div>
+
+      <!-- Complaints List with Inline Management Action -->
+      <div th:if="${not #lists.isEmpty(complaints)}" style="display: flex; flex-direction: column; gap: var(--space-6);">
+        <div th:each="c : ${complaints}" class="card" style="border: 1px solid var(--border-color); box-shadow: none; background: #ffffff;">
+          <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: var(--space-3); margin-bottom: var(--space-3);">
+            <div>
+              <span style="font-weight: 700; color: var(--color-primary); font-size: 1.1rem;" th:text="'Ticket #' + ${c.id}">Ticket #1</span>
+              <span style="margin-left: 8px; font-size: 0.8rem; font-weight: 600; padding: 2px 8px; border-radius: 9999px; background: var(--color-surface); color: var(--text-secondary);" th:text="${c.submitterType}">STUDENT</span>
+              <span style="margin-left: 8px; font-size: 0.85rem; font-weight: 600; color: var(--text-primary);" th:text="${c.category}">Delay</span>
+              <span th:if="${c.bus != null}" style="margin-left: 8px; font-size: 0.85rem; color: var(--text-muted);" th:text="'(Bus: ' + ${c.bus.busNumber} + ')'">(Bus: MBU-001)</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: var(--space-3);">
+              <span style="font-size: 0.8rem; color: var(--text-muted);" th:text="${c.createdAt != null ? #temporals.format(c.createdAt, 'dd MMM yyyy, hh:mm a') : '-'}">24 Sep 2026</span>
+              <span class="status-badge"
+                    th:classappend="'status-' + ${#strings.toLowerCase(c.currentStatus)}"
+                    th:text="${c.currentStatus}">OPEN</span>
+            </div>
+          </div>
+
+          <p style="color: var(--text-primary); font-size: 0.95rem; margin: 0 0 var(--space-4) 0; background: var(--color-surface); padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm);" th:text="${c.description}">Description text...</p>
+
+          <!-- Status Update & Response Form -->
+          <form th:action="@{/management/complaints/{id}/update(id=${c.id})}" method="POST" style="background: rgba(87, 115, 118, 0.04); padding: var(--space-4); border-radius: var(--radius-sm);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-3); margin-bottom: var(--space-3);">
+              <div class="form-group" style="margin-bottom: 0;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Update Status:</label>
+                <select name="status" class="form-control" style="font-size: 0.85rem; padding: 6px 10px;">
+                  <option th:each="st : ${statuses}"
+                          th:value="${st}"
+                          th:text="${st}"
+                          th:selected="${st == c.currentStatus.name()}">OPEN</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 0;">
+                <label style="font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);">Official Response / Resolution Note:</label>
+                <input type="text" name="response" class="form-control" placeholder="Enter resolution details..." th:value="${c.managementResponse}" style="font-size: 0.85rem; padding: 6px 10px;">
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer style="background: #ffffff; border-top: 1px solid var(--border-color); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,18 @@
+/* ============================================================
+   MBU RouteX — Shadows & Radius
+   ============================================================ */
+
+/* ── Border Radius ── */
+.rounded-sm   { border-radius: var(--radius-sm); }
+.rounded      { border-radius: var(--radius-md); }
+.rounded-lg   { border-radius: var(--radius-lg); }
+.rounded-xl   { border-radius: var(--radius-xl); }
+.rounded-full { border-radius: var(--radius-full); }
+
+/* ── Box Shadows ── */
+.shadow-none  { box-shadow: none; }
+.shadow-xs    { box-shadow: var(--shadow-xs); }
+.shadow-sm    { box-shadow: var(--shadow-sm); }
+.shadow-md    { box-shadow: var(--shadow-md); }
+.shadow-lg    { box-shadow: var(--shadow-lg); }
+.shadow-xl    { box-shadow: var(--shadow-xl); }

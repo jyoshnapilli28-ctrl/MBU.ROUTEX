@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}"></head>
+<body style="background-color: var(--color-surface, #E5EBEB); min-height: 100vh; display: flex; flex-direction: column;">
+
+  <!-- ── Top Header / Brand Bar ── -->
+  <nav class="taskbar">
+    <a th:href="@{/}" class="taskbar-logo" title="MBU RouteX">
+      <img th:src="@{/assets/brand/logo-full-nav.png}" alt="MBU RouteX" class="taskbar-logo-img">
+    </a>
+
+    <div class="taskbar-sep"></div>
+
+    <div class="taskbar-nav">
+      <a th:href="@{/}" class="taskbar-nav-item taskbar-nav-home">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Home
+      </a>
+      <a th:href="@{/login}" class="taskbar-nav-item">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M15 12H3"/>
+        </svg>
+        Portal Login
+      </a>
+    </div>
+
+    <div style="margin-left: auto; display: flex; gap: var(--space-2);">
+      <a th:href="@{/login/student}" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8125rem;">Student</a>
+      <a th:href="@{/login/driver}" class="btn btn-outline" style="padding: 6px 14px; font-size: 0.8125rem;">Driver</a>
+      <a th:href="@{/login/management}" class="btn btn-primary" style="padding: 6px 14px; font-size: 0.8125rem;">Management</a>
+    </div>
+  </nav>
+
+  <!-- ── Integrated Campus Hero ── -->
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-facets-left"></div>
+    <div class="hero-facets-right"></div>
+
+    <div class="hero-content">
+      <img th:src="@{/assets/brand/logo-white.png}" alt="MBU RouteX" class="hero-logo-img">
+      <h1 class="hero-title">MBU RouteX</h1>
+      <p class="hero-subtitle">TRACK &nbsp;·&nbsp; TRAVEL &nbsp;·&nbsp; CONNECT</p>
+      <div class="hero-scroll-indicator">
+        <div class="hero-scroll-mouse">
+          <div class="hero-scroll-dot"></div>
+        </div>
+        <div class="hero-scroll-label">SCROLL DOWN<br>TO EXPLORE</div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+             style="margin-top: 1px; color: rgba(255,255,255,0.85);">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
+    </div>
+
+    <div class="hero-motto">
+      <div class="hero-motto-bar"></div>
+      <div class="hero-motto-lines">
+        <span>DREAM</span>
+        <span>BELIEVE</span>
+        <span>ACHIEVE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Role Login Section ── -->
+  <main style="flex: 1; padding: var(--space-4) 0 var(--space-8);">
+    <div class="dash-section-header" style="text-align: center;">
+      <h2 style="font-size: 1.5rem; margin-bottom: 6px;">Select Your Transport Portal</h2>
+      <p>Sign in to access assigned buses, live route tracking, schedules, and transport support</p>
+    </div>
+
+    <div class="dash-grid" style="margin-top: var(--space-4);">
+      <!-- Student Portal Card -->
+      <a th:href="@{/login/student}" class="mcard" style="min-height: 150px; height: 150px;">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-teal">
+              <img th:src="@{/assets/icons/student/my-bus.svg}" alt="Student Portal">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3 style="font-size: 1.05rem;">Student Portal</h3>
+              <p>Live bus tracking, route stops, complaints, and digital attendance QR pass.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow" style="align-self: flex-start; margin-top: var(--space-2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-bus.png}" alt="Student" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Driver Portal Card -->
+      <a th:href="@{/login/driver}" class="mcard" style="min-height: 150px; height: 150px;">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-blue">
+              <img th:src="@{/assets/icons/driver/driver-role.svg}" alt="Driver Portal">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3 style="font-size: 1.05rem;">Driver Portal</h3>
+              <p>Manage real-time bus status, view daily trip schedules, and report mechanical issues.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow" style="align-self: flex-start; margin-top: var(--space-2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-service.png}" alt="Driver" class="mcard-visual-img">
+        </div>
+      </a>
+
+      <!-- Management Portal Card -->
+      <a th:href="@{/login/management}" class="mcard" style="min-height: 150px; height: 150px;">
+        <div class="mcard-body">
+          <div class="mcard-top">
+            <div class="mcard-icon icon-amber">
+              <img th:src="@{/assets/icons/management/management-role.svg}" alt="Management Portal">
+            </div>
+            <div class="mcard-text-wrap">
+              <h3 style="font-size: 1.05rem;">Management Portal</h3>
+              <p>Fleet monitoring, trip administration, grievance resolution, and operational reports.</p>
+            </div>
+          </div>
+          <div class="mcard-arrow" style="align-self: flex-start; margin-top: var(--space-2);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                 fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </div>
+        </div>
+        <div class="mcard-visual">
+          <img th:src="@{/assets/images/cards/card-mechanic.png}" alt="Management" class="mcard-visual-img">
+        </div>
+      </a>
+    </div>
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer style="background: #ffffff; border-top: 1px solid var(--color-pale, #C5D3D4); padding: var(--space-4); text-align: center; margin-top: auto;">
+    <p style="color: var(--text-muted, #718096); font-size: 0.85rem; margin: 0;">MBU RouteX — TRACK · TRAVEL · CONNECT</p>
+  </footer>
+
+</body>
+</html>
