@@ -1,0 +1,30 @@
+# ============================================================
+# MBU RouteX — Deployment Dockerfile
+# Multi-stage build for Spring Boot 3.3.5 + Java 17
+# ============================================================
+
+# Stage 1: Build Stage
+FROM maven:3.9-eclipse-temurin-17 AS build
+WORKDIR /app
+
+# Copy pom.xml and cache Maven dependencies
+COPY pom.xml .
+RUN mvn dependency:go-offline -B -DskipTests
+
+# Copy source code and package application into executable JAR
+COPY src ./src
+RUN mvn clean package -B -DskipTests
+
+# Stage 2: Production Runtime Stage
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+# Copy compiled Spring Boot fat JAR from build stage
+COPY --from=build /app/target/routex-1.0.0.jar app.jar
+
+# Container runtime injects dynamic PORT (defaults to 8080 locally)
+ENV PORT=8080
+EXPOSE 8080
+
+# Launch Spring Boot with dynamic port binding
+CMD ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar app.jar"]
