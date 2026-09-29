@@ -1,0 +1,43 @@
+# Maven build target directory
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE files
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project/
+.classpath
+
+# Environment variables & secrets
+.env
+*.env
+.env.local
+.env.*.local
+secrets/
+*.pem
+*.key
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+logs/
+
+# Python cache / test artifacts
+__pycache__/
+*.py[cod]
+*$py.class
