@@ -22,6 +22,9 @@ public class MbuRoutexApplication {
         if (rawUrl == null || rawUrl.isBlank()) {
             rawUrl = System.getenv("DATABASE_URL");
         }
+        if (rawUrl == null || rawUrl.isBlank()) {
+            rawUrl = System.getenv("MYSQL_PUBLIC_URL");
+        }
 
         if (rawUrl != null && !rawUrl.isBlank()) {
             try {
@@ -54,7 +57,7 @@ public class MbuRoutexApplication {
                     }
                 }
             } catch (Exception e) {
-                log.warn("[MBU RouteX] Could not parse MYSQL_URL/DATABASE_URL: {}", e.getMessage());
+                System.err.println("[MBU RouteX] Could not parse database URL: " + e.getMessage());
             }
         }
 
@@ -63,12 +66,18 @@ public class MbuRoutexApplication {
         String effectiveDb   = System.getProperty("MYSQLDATABASE", System.getenv("MYSQLDATABASE") != null ? System.getenv("MYSQLDATABASE") : "mbu_routex");
         String effectiveUser = System.getProperty("MYSQLUSER", System.getenv("MYSQLUSER") != null ? System.getenv("MYSQLUSER") : "root");
 
-        log.info("==================================================================");
-        log.info("[MBU RouteX] Database Target: jdbc:mysql://{}:{}/{}", effectiveHost, effectivePort, effectiveDb);
-        log.info("[MBU RouteX] Database Username: {}", effectiveUser);
+        System.out.println("==================================================================");
+        System.out.println("[MBU RouteX] DATABASE TARGET: jdbc:mysql://" + effectiveHost + ":" + effectivePort + "/" + effectiveDb);
+        System.out.println("[MBU RouteX] DATABASE USER:   " + effectiveUser);
         if ("localhost".equalsIgnoreCase(effectiveHost)) {
-            log.warn("[MBU RouteX] WARNING: Connecting to 'localhost:3306'. If running on Railway, ensure MYSQLHOST or MYSQL_URL is configured in service variables!");
+            System.err.println("------------------------------------------------------------------");
+            System.err.println("[MBU RouteX] WARNING: Connecting to 'localhost:3306'.");
+            System.err.println("[MBU RouteX] If running on Railway, MYSQLHOST or MYSQL_URL is MISSING");
+            System.err.println("[MBU RouteX] in the 'MBU' service environment variables!");
+            System.err.println("------------------------------------------------------------------");
         }
-        log.info("==================================================================");
+        System.out.println("==================================================================");
+        System.out.flush();
+        System.err.flush();
     }
 }
